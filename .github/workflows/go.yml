@@ -40,11 +40,21 @@ jobs:
         make provider.addtype provider=${provider_name} group=${group} kind=${type}
     - name: generate
       run: |
+        cd provider-template
         make generate
-    - name: call angryjet
+    - name: go run angryjet
       if: always()
       run: |
+        cd provider-template
         (
           cd apis
           go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./...
+        )
+    - name: call angryjet
+      if: always()
+      run: |
+        cd provider-template
+        (
+          cd apis
+          angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./...
         )
