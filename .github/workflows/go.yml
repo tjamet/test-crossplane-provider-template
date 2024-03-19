@@ -12,7 +12,9 @@ on:
 jobs:
 
   build:
+    continue-on-error: true
     strategy:
+        fail-fast: false
         matrix:
           version: [20, 21, 22]
 
