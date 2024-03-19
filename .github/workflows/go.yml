@@ -25,6 +25,8 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.${{ matrix.version }}'
+    - name: Install CLI
+      run: go install github.com/crossplane/crossplane-tools/cmd/angryjet@master
 
     - name: Build
       run: |
@@ -36,4 +38,13 @@ jobs:
         export group=sample
         export type=MyType
         make provider.addtype provider=${provider_name} group=${group} kind=${type}
+    - name: generate
+      run: |
         make generate
+    - name: call angryjet
+      if: always()
+      run: |
+        (
+          cd apis
+          go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./...
+        )
