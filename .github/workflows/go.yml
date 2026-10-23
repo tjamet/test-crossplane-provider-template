@@ -16,7 +16,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          version: [24, 25, 26]
+          version: [25, 26, 27]
 
     runs-on: ubuntu-latest
     steps:
